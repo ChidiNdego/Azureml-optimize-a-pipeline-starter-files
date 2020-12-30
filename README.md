@@ -119,6 +119,7 @@ Both models have remarkably different architectures. The HyperDrive architecture
 This further explains why there's a difference in the result. In some cases a selected model for an hyperdrive experiment may not be best suited for that problem. Hence, whatever algorithm is specified is what the hyperdrive makes do with. As a result, hyperdrive is at a disadvantage in this regard.
 
 ## Future work
+
 **Areas of Improvements for the HyperDrive Model**
 1.  Parameter sampling can be carried out more effectively. Increase in RandomParameterSampling or start with a wide range of values for each parameter, then refine the search space.
 2.  Apply other types of parameter sampling including the Bayesian Parameter Sampling. Bayesian sampling tries to intelligently pick the next sample of hyperparameters, based on how the previous samples performed, such that the new sample improves the reported primary metric.
