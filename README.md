@@ -1,22 +1,22 @@
 # Optimizing an ML Pipeline in Azure
 
 ## Overview
-This project is part of the Udacity Azure ML Nanodegree: the first of three projects.
-In this project, we build and optimize an Azure ML pipeline using the Python SDK and a provided Scikit-learn model.
-This model is then compared to an Azure AutoML run.
+This is the first of three projects required for the fulfilment of the Microsoft Azure Machine Learning Nanodegree program with Udacity.
+
+In this project, we build and optimize an Azure ML pipeline using the Python SDK and a provided Scikit-learn model. This model is then compared to an Azure AutoML run.
 
 Click [here](https://docs.microsoft.com/en-us/azure/machine-learning/) for more information on Azure ML.
 
 ## Summary
 This dataset contains data from a direct marketing campaign through phone calls of a Portuguese banking institution. The classification goal is to predict if a client will subscribe to one of the bank's product, bank term deposit, represented by the variable, y. 
 	
-At pristine state, the dataset contains 20 different predictor variable and 32950 rows representing different customers with 3,692 subscribing to the bank's product and 29,258 negative classes.
+At pristine state, the dataset contains `20` different predictor variables and `32,950` rows representing different customers with `3,692` subscribing to the bank's product and `29,258` negative classes.
 
 Click [here](https://archive.ics.uci.edu/ml/datasets/bank+marketing) for detailed information about the dataset.
 
 Click [here](https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/bankmarketing_train.csv) to download the dataset.
 
-The best model optimizer was the AutoML with an accuracy of 0.9162. The Hyperdrive experiment faired really well but a little lower at 0.9091 model accuracy.
+The best model optimizer was the AutoML with an accuracy of `91.62%`. The Hyperdrive experiment faired pretty well but a little lower at `90.91%` model accuracy.
 
 ## Scikit-learn Pipeline
 To use Hyperdrive, one must have a custom-coded ML model. Otherwise, hyperdrive won't know what model to optimize the parameters for. SKLearn's standard logistic regression algorithm was used for this binary classification problem. Azure ML SDK and hyperdrive package helped to choose optimal adjustable parameters for model training.
@@ -37,11 +37,11 @@ NOTE: A training script and a notebook was created for the execution of the proc
 Below is a brief explanation of each step:
 
 ### Data collection/creation
-The csv data is collected from the url link specified earlier and created as a tabular dataset using the TabularDatasetFactory class.
+The csv data is collected from the url link specified earlier and created as a tabular dataset using the `TabularDatasetFactory` class.
 
 ### Data preparation
-This involved the cleaning and the splitting of the dataset. A clean_data function in the training script dropped rows with empty values and performed a one hot encoding on the categorical columns.
-Datasets are also split into train and test sets. This splitting of a dataset is helpful to validate our model. Splitting ratio is often dependent on the size of the dataset. For this experiment, the training data to test data split ratio is 70:30.
+This involved the cleaning and the splitting of the dataset. A `clean_data` function in the [training script](train.py) dropped rows with empty values and performed a one-hot encoding on the categorical columns.
+Datasets are also split into train and test sets. This splitting of a dataset is helpful to validate our model. Splitting ratio is often dependent on the size of the dataset. For this experiment, the training to test data split ratio is set at `70:30`.
 
 ### Training configuration
 Choosing optimal hyperparameter values for model training can be difficult, and usually involves a great deal of trial and error. With Azure Machine Learning, you can leverage cloud-scale experiments to tune hyperparameters.
@@ -62,12 +62,12 @@ Hyperparameter tuning is the process of finding the configuration of hyperparame
 
 Click [here](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters) for more information on Azure ML hyperparameter tuning.
 
-The two hyperparamters used in this experiment are ``C`` and ``max_iter``. ``C`` is the Inverse Regularization Strength which applies a penalty to stop increasing the magnitude of parameter values in order to reduce overfitting. ``max_iter`` is the maximum iteration to converge for the SKLearn Logistic Regression algorithm.
+The two hyperparamters used in this experiment are `C` and `max_iter`. ``C`` is the Inverse Regularization Strength which applies a penalty to stop increasing the magnitude of parameter values in order to reduce overfitting. `max_iter` is the maximum possible iteration to converge for the SKLearn Logistic Regression algorithm.
 
 We have used [Random Parameter Sampling](https://docs.microsoft.com/en-us/python/api/azureml-train-core/azureml.train.hyperdrive.randomparametersampling?preserve-view=true&view=azure-ml-py) to sample over a set of continuous values. In random sampling, hyperparameter values are randomly selected from the defined search space. A benefit of this sampling technique is that it supports discrete and continuous hyperparameters.
 It also supports early termination of low-performance runs. An initial search can be done with this technique, then search space refined to improve results.
 
-The parameter search space used for `C` is [0.01, 0.1, 1, 10, 50] and for `max_iter` is [25, 50, 250, 500]. The optimal values were 50 and 250 respectively.
+The parameter search space used for `C` is [0.01, 0.1, 1, 10, 50] and for `max_iter` is [25, 50, 250, 500]. The optimal values were `50` and `250` respectively.
 
 **Primary metric specification**
 The [Primary Metric](https://docs.microsoft.com/en-us/python/api/azureml-train-core/azureml.train.hyperdrive.primarymetricgoal?preserve-view=true&view=azure-ml-py) is used to optimize the hyperparamter tuning. Each training run is evaluated for the primary metric. 
@@ -96,11 +96,11 @@ The trained model is saved. This is important if we want to deploy our model or 
 ## AutoML
 AutoML is the process of automating the time consuming, iterative tasks of machine learning model development. It is applicable in regression, classification, and time-series forecasting problems.
 
-In our experiment, VotingEnsemble proved to be the best model based on the accuracy metric; with a score of `0.9162062200877541`.
+In our experiment, `VotingEnsemble` proved to be the best model based on the accuracy metric; with a score of `0.9162062200877541`.
 
 [Voting Ensemble](https://machinelearningmastery.com/voting-ensembles-with-python/), is an ensemble machine learning model that combines the predictions from multiple other models. Here, it represents a collection of autoML iterations brought together to form an ensemble that implements soft voting.
 
-The VotingEnsemble model from our experiment consist of five algorithms. Below shows each algorithm and some parameters: `learning_rate`, `gamma`, `n_estimators`, and `reg_lambda`. 
+The VotingEnsemble model from our experiment consist of five algorithms. Below shows each algorithm and some parameters: `weight`, `learning_rate`, `gamma`, `n_estimators`, and `reg_lambda`. 
 
 Refer to the attached jupyter notebook for more detailed information.
 
@@ -119,18 +119,18 @@ HyperDrive: `0.9095599393019727`
 
 Both models have remarkably different architectures. The HyperDrive architecture was restricted to a specified custom-coded ML model. In this case, SKLearn's Logisic Regression. However, AutoML had an unconfined architecture. It accesses wide variety of algorithms and selects the best performing model.
 
-This further explains why there's a difference in the result. In some cases a selected model for an hyperdrive experiment may not be best suited for that problem. Hence, whatever algorithm is specified is what the hyperdrive makes do with. As a result, hyperdrive is at a disadvantage in this regard.
+This further explains why there's a difference in the result. In some cases, a selected model for an hyperdrive experiment may not be best suited for that problem. Hence, whatever algorithm is specified is what the hyperdrive makes do with. As a result, hyperdrive is at a disadvantage in this regard.
 
 ## Future work
 **Areas of Improvements for the HyperDrive Model**
-1.  Parameter sampling can be carried out more effectively. Increase in RandomParameterSampling or start with a wide range of values for each parameter, then refine the search space.
+1.  Parameter sampling can be carried out more effectively. Increase in `RandomParameterSampling` or start with a wide range of values for each parameter, then refine the search space.
 2.  Apply other types of parameter sampling including the Bayesian Parameter Sampling. Bayesian sampling tries to intelligently pick the next sample of hyperparameters, based on how the previous samples performed, such that the new sample improves the reported primary metric.
-3.  Target variable is seen to be highly imbalanced. This can invariably lead to a falsely perceived positive effect of a model's accuracy because the input data has bias towards one class. Hence the need to over-sample the minority class using a technique such as SMOTE. [Synthetic Minority Oversampling Technique (SMOTE)](https://machinelearningmastery.com/smote-oversampling-for-imbalanced-classification/) is a data augmentation technique used to duplicate the examples in the minority group of a classification problem.
-4.  Try a different primary metric. Sometimes accuracy alone doesn't represent true picture of the model's performance. Recall or precision are more specific metrics in related classification problems.
+3.  Target variable is seen to be highly imbalanced. This can invariably lead to a falsely perceived positive effect of a model's accuracy because the input data has bias towards one class. Hence, the need to over-sample the minority class using a technique such as SMOTE. [Synthetic Minority Oversampling Technique (SMOTE)](https://machinelearningmastery.com/smote-oversampling-for-imbalanced-classification/) is a data augmentation technique used to duplicate the examples in the minority group of a classification problem.
+4.  Try a different primary metric. Sometimes accuracy alone doesn't represent the true picture of the model's performance. Recall or precision are more specific metrics in related classification problems.
 5.  Tweak some other hyperdrive confirguration parameters including max total runs, to try a lot more combinations.
 
 **Areas of Improvements for the AutoML Model**
 1.  Address class imbalance to prevent model bias. 
-2.  Increase experiment timeout duration. This would allow for more model experimentation, but at expense of cost.
+2.  Increase experiment timeout duration. This would allow for more model experimentation, but at the expense of cost.
 3.  Try a different primary metric. Sometimes accuracy alone doesn't represent true picture of the model's performance. Recall or precision are more specific metrics in related classification problems.
 4.  Tweak some other AutoML confirguration parameters including number of cross validation to reduce model bias.
