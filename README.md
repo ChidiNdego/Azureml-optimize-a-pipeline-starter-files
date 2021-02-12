@@ -132,5 +132,5 @@ This further explains why there's a difference in the result. In some cases, a s
 **Areas of Improvements for the AutoML Model**
 1.  Address class imbalance to prevent model bias. 
 2.  Increase experiment timeout duration. This would allow for more model experimentation, but at the expense of cost.
-3.  Try a different primary metric. Sometimes accuracy alone doesn't represent true picture of the model's performance. Recall or precision are more specific metrics in related classification problems.
+3.  Try a different primary metric. Sometimes accuracy alone doesn't represent the true picture of the model's performance. Recall or precision are more specific metrics in related classification problems.
 4.  Tweak some other AutoML confirguration parameters including number of cross validation to reduce model bias.
